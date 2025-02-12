@@ -11,7 +11,7 @@ export default function Home() {
   return (
     <Container>
       <DynamicView>
-        <DynamicMaterialDesignIcons name="wave" />
+        <DynamicMaterialDesignIcons name="hand-wave" />
         <DynamicText>asd</DynamicText>
       </DynamicView>
     </Container>

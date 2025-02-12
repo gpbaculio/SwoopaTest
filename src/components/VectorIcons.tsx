@@ -27,5 +27,5 @@ type MaterialDesignIconsProps = React.ComponentProps<
   typeof MaterialDesignIcons
 >;
 export const DynamicMaterialDesignIcons = createContainer(
-  createBox<Theme, MaterialDesignIconsProps>(MaterialIcons),
+  createBox<Theme, MaterialDesignIconsProps>(MaterialDesignIcons),
 );
