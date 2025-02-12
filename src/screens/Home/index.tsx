@@ -1,6 +1,6 @@
-import React, {useId, useState} from 'react';
+import React, {Suspense, useId, useState} from 'react';
 
-import {DynamicView} from '@components';
+import {DynamicView, SkeletonLoader} from '@components';
 import {
   Container,
   HeaderButton,
@@ -14,7 +14,8 @@ import {
 } from './components';
 
 import {Product} from 'src/mocks';
-import {useInfiniteProductsQuery, usePaginatedQuery} from './hooks';
+import {useInfiniteProductsQuery} from './hooks';
+import {View} from 'react-native';
 
 type HomeCategory = Product['category'] | 'All';
 
@@ -37,10 +38,13 @@ export default function Home() {
     goToNextPage,
     goToPreviousPage,
   } = useInfiniteProductsQuery({category: 'All'});
-  console.log('products ', products);
+
   return (
     <Container>
       <Title />
+      <SkeletonLoader>
+        <DynamicView width={100} height={100} backgroundColor="GREY_TEXT" />
+      </SkeletonLoader>
       <DynamicView my="XS" variant="rowAlignCenter">
         {categories.map(({key, Icon}) => {
           const isActive = category === key;

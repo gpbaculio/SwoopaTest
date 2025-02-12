@@ -12,20 +12,20 @@ import Reanimated, {
 
 type SkeletonLoaderProps = {
   children: React.ReactElement<any, string | React.JSXElementConstructor<any>>;
-  backgroundColor: string;
-  highlightColor: string;
+  backgroundColor?: string;
+  highlightColor?: string;
 };
 
 export function SkeletonLoader({
   children,
-  backgroundColor,
-  highlightColor,
+  backgroundColor = '#E0E0E0',
+  highlightColor = '#F5F5F5',
 }: SkeletonLoaderProps) {
   const [layout, setLayout] = React.useState<LayoutRectangle>();
   const shared = useSharedValue(0);
 
   React.useEffect(() => {
-    shared.value = withRepeat(withTiming(1, {duration: 1000}), Infinity);
+    shared.value = withRepeat(withTiming(1, {duration: 800}), Infinity);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
