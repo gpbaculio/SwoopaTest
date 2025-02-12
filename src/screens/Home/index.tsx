@@ -13,12 +13,15 @@ import {
 } from './components';
 
 import {useInfiniteProductsQuery} from './hooks';
-import {ProductType} from 'src/mocks';
+
 import {spacing} from '@theme';
+
+import {ProductType} from 'src/mocks';
 
 export type HomeCategory = ProductType['category'] | 'All';
 
 function Home() {
+  const id = useId();
   const [category, setCategory] = useState<HomeCategory>('All');
 
   const {data, hasNextPage, fetchNextPage, isLoading, isError} =
@@ -75,9 +78,8 @@ function Home() {
         width={width - spacing.M * 2}>
         <FlashList
           data={data}
-          keyExtractor={item => item.id.toString()}
+          keyExtractor={item => `${id}-product-${item.id}`}
           renderItem={({item}) => {
-            console.log('item ', item);
             return <Product item={item} />;
           }}
           estimatedItemSize={50} // Optimize performance
