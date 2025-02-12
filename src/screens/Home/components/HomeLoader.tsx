@@ -7,7 +7,7 @@ import {Container} from './index';
 const mockHeaders = new Array(4).fill(null);
 const mockProducts = new Array(5).fill(null);
 
-export default function HomeLoader() {
+export function HomeLoader() {
   const {width, height} = useWindowDimensions();
 
   return (
@@ -18,7 +18,7 @@ export default function HomeLoader() {
             width={160}
             height={28}
             borderRadius={4}
-            backgroundColor="BUTTON_ACTIVE"
+            backgroundColor="GREY_TEXT"
           />
           <DynamicView my="XS" variant="rowAlignCenter">
             {mockHeaders.map((_, index) => (
@@ -27,14 +27,14 @@ export default function HomeLoader() {
                   width={36}
                   height={36}
                   borderRadius={36}
-                  backgroundColor="BUTTON_ACTIVE"
+                  backgroundColor="GREY_TEXT"
                 />
                 <DynamicView
                   mt="XS"
                   width={index === 0 ? 20 : 50}
                   height={20}
                   borderRadius={4}
-                  backgroundColor="BUTTON_ACTIVE"
+                  backgroundColor="GREY_TEXT"
                 />
               </DynamicView>
             ))}
@@ -46,7 +46,7 @@ export default function HomeLoader() {
               height={height * 0.21}
               borderRadius={16}
               my="XS"
-              backgroundColor="BUTTON_ACTIVE"
+              backgroundColor="GREY_TEXT"
             />
           ))}
         </>

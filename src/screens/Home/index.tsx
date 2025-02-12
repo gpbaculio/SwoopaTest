@@ -1,6 +1,6 @@
-import React, {useId, useState} from 'react';
+import React, {Suspense, useId, useState} from 'react';
 
-import {DynamicView, SkeletonLoader} from '@components';
+import {DynamicView} from '@components';
 import {
   Container,
   HeaderButton,
@@ -11,11 +11,11 @@ import {
   IconHome,
   IconHouseHold,
   Title,
+  HomeLoader,
 } from './components';
 
 import {Product} from 'src/mocks';
 import {useInfiniteProductsQuery} from './hooks';
-import HomeLoader from './components/HomeLoader';
 
 type HomeCategory = Product['category'] | 'All';
 
@@ -42,7 +42,6 @@ function Home() {
   return (
     <Container>
       <Title />
-
       <DynamicView my="XS" variant="rowAlignCenter">
         {categories.map(({key, Icon}) => {
           const isActive = category === key;
@@ -63,6 +62,10 @@ function Home() {
   );
 }
 
-export default function H() {
-  return <HomeLoader />;
+export default function HomeSuspense() {
+  return (
+    <Suspense fallback={<HomeLoader />}>
+      <Home />
+    </Suspense>
+  );
 }
