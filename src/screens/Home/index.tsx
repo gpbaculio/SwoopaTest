@@ -1,18 +1,19 @@
-import {Text} from 'react-native';
 import React from 'react';
 
 import {
-  DynamicText, 
+  DynamicMaterialDesignIcons,
+  DynamicText,
   DynamicView,
-  ScreenContainer,
 } from '@components';
+import {Container} from './components';
 
 export default function Home() {
   return (
-    <ScreenContainer>
+    <Container>
       <DynamicView>
+        <DynamicMaterialDesignIcons name="wave" />
         <DynamicText>asd</DynamicText>
       </DynamicView>
-    </ScreenContainer>
+    </Container>
   );
 }
