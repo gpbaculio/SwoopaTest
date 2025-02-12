@@ -5,7 +5,7 @@ const theme = createTheme({
   colors,
   spacing,
   breakpoints: {},
-  text,
+  textVariants: text,
   container,
 });
 
