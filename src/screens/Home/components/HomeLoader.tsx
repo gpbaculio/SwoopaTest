@@ -1,18 +1,22 @@
 import React from 'react';
+import {useWindowDimensions} from 'react-native';
 
 import {DynamicView, SkeletonLoader} from '@components';
 import {Container} from './index';
 
 const mockHeaders = new Array(4).fill(null);
+const mockProducts = new Array(5).fill(null);
 
 export default function HomeLoader() {
+  const {width, height} = useWindowDimensions();
+
   return (
     <Container>
       <SkeletonLoader>
         <>
           <DynamicView
-            width={150}
-            height={24}
+            width={160}
+            height={28}
             borderRadius={4}
             backgroundColor="BUTTON_ACTIVE"
           />
@@ -26,7 +30,7 @@ export default function HomeLoader() {
                   backgroundColor="BUTTON_ACTIVE"
                 />
                 <DynamicView
-                  mt="XXS"
+                  mt="XS"
                   width={index === 0 ? 20 : 50}
                   height={20}
                   borderRadius={4}
@@ -35,6 +39,16 @@ export default function HomeLoader() {
               </DynamicView>
             ))}
           </DynamicView>
+          {mockProducts.map((_i, index) => (
+            <DynamicView
+              key={`mock-product-${index}`}
+              width={width - 32}
+              height={height * 0.21}
+              borderRadius={16}
+              my="XS"
+              backgroundColor="BUTTON_ACTIVE"
+            />
+          ))}
         </>
       </SkeletonLoader>
     </Container>
