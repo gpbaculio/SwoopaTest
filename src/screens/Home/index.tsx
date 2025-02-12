@@ -14,6 +14,7 @@ import {
 } from './components';
 
 import {Product} from 'src/mocks';
+import {useInfiniteProductsQuery, usePaginatedQuery} from './hooks';
 
 type HomeCategory = Product['category'] | 'All';
 
@@ -28,6 +29,15 @@ export default function Home() {
   const [category, setCategory] = useState<HomeCategory>('All');
 
   const id = useId();
+  const {
+    products,
+    pagination,
+    isLoading,
+    isError,
+    goToNextPage,
+    goToPreviousPage,
+  } = useInfiniteProductsQuery({category: 'All'});
+  console.log('products ', products);
   return (
     <Container>
       <Title />
