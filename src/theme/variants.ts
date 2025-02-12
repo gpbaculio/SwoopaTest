@@ -18,6 +18,10 @@ export const container = {
     alignItems: 'center',
     justifyContent: 'center',
   },
+  rowAlignCenter: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
 };
 
 export const spacing = {
@@ -36,6 +40,10 @@ export const spacing = {
 export const text = {
   defaults: {
     fontSize: 14,
+    fontWeight: '400',
+    fontFamily: 'Nunito-Regular',
+  },
+  NunitoRegular: {
     fontWeight: '400',
     fontFamily: 'Nunito-Regular',
   },
