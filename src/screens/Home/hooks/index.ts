@@ -5,7 +5,6 @@ import {PaginatedResponse, Product, ProductsShopAPI} from 'src/mocks';
 
 interface UsePaginatedQueryOptions {
   category?: Product['category'];
-  initialPage?: number;
 }
 
 type ProductsQueryKey = [
@@ -13,11 +12,8 @@ type ProductsQueryKey = [
   {page: number; category?: Product['category']},
 ];
 
-export function usePaginatedQuery({
-  category,
-  initialPage = 1,
-}: UsePaginatedQueryOptions) {
-  const [page, setPage] = useState(initialPage);
+export function usePaginatedQuery({category}: UsePaginatedQueryOptions) {
+  const [page, setPage] = useState(1);
 
   const {data, isLoading, isError} = useQuery<
     PaginatedResponse<Product>,
