@@ -1,4 +1,6 @@
 import React from 'react';
+import {StyleSheet} from 'react-native';
+
 import {
   ContainerProp,
   DynamicMaterialDesignIcons,
@@ -9,10 +11,8 @@ import {
   DynamicView,
   ScreenContainer,
 } from '@components';
-import {colors} from 'src/theme/variants';
-import {StyleSheet} from 'react-native';
 
-export * from './HomeLoader';
+import {colors} from 'src/theme/variants';
 
 export function Container({children}: ContainerProp) {
   return (
@@ -133,6 +133,8 @@ export function HeaderButton({
     </DynamicTouchableOpacity>
   );
 }
+
+export * from './HomeLoader';
 
 const styles = StyleSheet.create({
   shadow: {

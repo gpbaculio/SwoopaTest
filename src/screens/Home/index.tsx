@@ -1,4 +1,4 @@
-import React, {Suspense, useId, useState} from 'react';
+import React, {useId, useState} from 'react';
 
 import {DynamicView, SkeletonLoader} from '@components';
 import {
@@ -15,7 +15,6 @@ import {
 
 import {Product} from 'src/mocks';
 import {useInfiniteProductsQuery} from './hooks';
-import {View} from 'react-native';
 
 type HomeCategory = Product['category'] | 'All';
 
@@ -26,7 +25,7 @@ const categories = [
   {key: 'Garden', Icon: IconGarden},
 ];
 
-export default function Home() {
+function Home() {
   const [category, setCategory] = useState<HomeCategory>('All');
 
   const id = useId();
@@ -42,9 +41,7 @@ export default function Home() {
   return (
     <Container>
       <Title />
-      <SkeletonLoader>
-        <DynamicView width={100} height={100} backgroundColor="GREY_TEXT" />
-      </SkeletonLoader>
+
       <DynamicView my="XS" variant="rowAlignCenter">
         {categories.map(({key, Icon}) => {
           const isActive = category === key;
@@ -61,6 +58,42 @@ export default function Home() {
           );
         })}
       </DynamicView>
+    </Container>
+  );
+}
+const mockHeaders = new Array(4).fill(null);
+export default function H() {
+  return (
+    <Container>
+      <SkeletonLoader>
+        <>
+          <DynamicView
+            width={150}
+            height={24}
+            borderRadius={4}
+            backgroundColor="BUTTON_ACTIVE"
+          />
+          <DynamicView my="XS" variant="rowAlignCenter">
+            {mockHeaders.map((_, index) => (
+              <DynamicView key={index} variant="centerItems" mr="S">
+                <DynamicView
+                  width={36}
+                  height={36}
+                  borderRadius={36}
+                  backgroundColor="BUTTON_ACTIVE"
+                />
+                <DynamicView
+                  mt="XXS"
+                  width={index === 0 ? 20 : 50}
+                  height={20}
+                  borderRadius={4}
+                  backgroundColor="BUTTON_ACTIVE"
+                />
+              </DynamicView>
+            ))}
+          </DynamicView>
+        </>
+      </SkeletonLoader>
     </Container>
   );
 }
