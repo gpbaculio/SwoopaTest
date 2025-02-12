@@ -38,6 +38,10 @@ export const DynamicTouchableOpacity = createContainer(
   createBox<Theme, TouchableOpacityProps>(TouchableOpacity),
 );
 
+export type DynamicTouchableOpacityProps = React.ComponentProps<
+  typeof DynamicTouchableOpacity
+>;
+
 export const DynamicKeyboardAvoidingView = createContainer(
   createBox<Theme, KeyboardAvoidingViewProps>(KeyboardAvoidingView),
 );
