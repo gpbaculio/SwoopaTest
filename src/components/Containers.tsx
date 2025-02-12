@@ -5,8 +5,11 @@ import {NavigationContainer} from '@react-navigation/native';
 import {ThemeProvider} from '@shopify/restyle';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import {SafeAreaView} from 'react-native-safe-area-context';
+import {QueryClient, QueryClientProvider} from '@tanstack/react-query';
 
 import theme from '@theme';
+
+const queryClient = new QueryClient();
 
 export type ContainerProp = {
   children: ReactNode;
@@ -14,13 +17,15 @@ export type ContainerProp = {
 
 export function RootContainer({children}: ContainerProp) {
   return (
-    <GestureHandlerRootView style={styles.container}>
-      <SafeAreaProvider style={styles.container}>
-        <NavigationContainer>
-          <ThemeProvider theme={theme}>{children}</ThemeProvider>
-        </NavigationContainer>
-      </SafeAreaProvider>
-    </GestureHandlerRootView>
+    <QueryClientProvider client={queryClient}>
+      <GestureHandlerRootView style={styles.container}>
+        <SafeAreaProvider style={styles.container}>
+          <NavigationContainer>
+            <ThemeProvider theme={theme}>{children}</ThemeProvider>
+          </NavigationContainer>
+        </SafeAreaProvider>
+      </GestureHandlerRootView>
+    </QueryClientProvider>
   );
 }
 
