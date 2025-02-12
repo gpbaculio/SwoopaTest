@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet} from 'react-native';
+import {StyleSheet, useWindowDimensions} from 'react-native';
 
 import {
   ContainerProp,
@@ -10,6 +10,7 @@ import {
   DynamicTouchableOpacityProps,
   DynamicView,
   ScreenContainer,
+  SkeletonLoader,
 } from '@components';
 export * from './HomeLoader';
 export * from './Product';
@@ -142,6 +143,32 @@ export function HeadersContainer({children}: ContainerProp) {
     <DynamicView my="XS" variant="rowAlignCenter">
       {children}
     </DynamicView>
+  );
+}
+
+export function ListContainer({children}: ContainerProp) {
+  const {height} = useWindowDimensions();
+
+  return (
+    <DynamicView flex={1} minHeight={height * 0.9}>
+      {children}
+    </DynamicView>
+  );
+}
+
+export function FooterLoader() {
+  const {height, width} = useWindowDimensions();
+
+  return (
+    <SkeletonLoader>
+      <DynamicView
+        width={width - 32}
+        height={height * 0.21}
+        borderRadius={16}
+        my="XS"
+        backgroundColor="GREY_TEXT"
+      />
+    </SkeletonLoader>
   );
 }
 

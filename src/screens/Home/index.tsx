@@ -1,7 +1,6 @@
 import React, {Suspense, useId, useState} from 'react';
 import {FlashList} from '@shopify/flash-list';
 import {RefreshControl} from 'react-native-gesture-handler';
-import {useWindowDimensions} from 'react-native';
 
 import {DynamicText, DynamicView} from '@components';
 import {
@@ -10,11 +9,11 @@ import {
   HomeLoader,
   Product,
   HeaderCategories,
+  ListContainer,
+  FooterLoader,
 } from './components';
 
 import {useInfiniteProductsQuery} from './hooks';
-
-import {spacing} from '@theme';
 
 import {ProductType} from 'src/mocks';
 
@@ -30,7 +29,6 @@ function Home() {
     });
 
   const [refreshing, setRefreshing] = useState(false);
-  const {width, height} = useWindowDimensions();
   // Handle category change
   const handleChangeCategory = (key: HomeCategory) => setCategory(key);
 
@@ -72,10 +70,7 @@ function Home() {
         category={category}
         handleChangeCategory={handleChangeCategory}
       />
-      <DynamicView
-        flex={1}
-        minHeight={height * 0.9}
-        width={width - spacing.M * 2}>
+      <ListContainer>
         <FlashList
           data={data}
           keyExtractor={item => `${id}-product-${item.id}`}
@@ -88,19 +83,9 @@ function Home() {
           }
           onEndReached={onEndReached}
           onEndReachedThreshold={0.5} // Load more when reaching 50% from the bottom
-          ListFooterComponent={
-            hasNextPage ? (
-              <DynamicView
-                width={width - 32}
-                height={height * 0.21}
-                borderRadius={16}
-                my="XS"
-                backgroundColor="GREY_TEXT"
-              />
-            ) : null
-          }
+          ListFooterComponent={hasNextPage ? <FooterLoader /> : null}
         />
-      </DynamicView>
+      </ListContainer>
     </Container>
   );
 }
