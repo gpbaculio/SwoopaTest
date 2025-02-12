@@ -11,6 +11,8 @@ import {
   ImageProps,
   TextInputProps,
   TextInput,
+  ImageBackground,
+  ImageBackgroundProps,
 } from 'react-native';
 import {createBox, createText} from '@shopify/restyle';
 
@@ -28,6 +30,10 @@ export const DynamicTextInput = createContainer(
 
 export const DynamicImage = createContainer(
   createBox<Theme, ImageProps>(Image),
+);
+
+export const DynamicImageBackground = createContainer(
+  createBox<Theme, ImageBackgroundProps>(ImageBackground),
 );
 
 export const DynamicPressable = createContainer(

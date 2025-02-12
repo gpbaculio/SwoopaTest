@@ -2,7 +2,12 @@ import Animated from 'react-native-reanimated';
 import {createBox} from '@shopify/restyle';
 import {ScrollView} from 'react-native-gesture-handler';
 
-import {DynamicPressable, DynamicView} from './DynamicRN';
+import {
+  DynamicImage,
+  DynamicImageBackground,
+  DynamicPressable,
+  DynamicView,
+} from './DynamicRN';
 
 import {createContainer} from '@utils';
 
@@ -10,6 +15,13 @@ import {Theme} from '@theme';
 
 export const DynamicAnimatedView =
   Animated.createAnimatedComponent(DynamicView);
+
+export const DynamicAnimatedImage =
+  Animated.createAnimatedComponent(DynamicImage);
+
+export const DynamicAnimatedImageBackground = Animated.createAnimatedComponent(
+  DynamicImageBackground,
+);
 
 export const AnimatedPressable =
   Animated.createAnimatedComponent(DynamicPressable);

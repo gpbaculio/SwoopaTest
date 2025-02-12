@@ -64,6 +64,7 @@ function Home() {
     <Container>
       <Title />
       <HeaderCategories
+        isLoading={isRefetching || isLoading}
         category={category}
         handleChangeCategory={handleChangeCategory}
       />
@@ -77,7 +78,7 @@ function Home() {
             renderItem={({item}) => {
               return <Product item={item} />;
             }}
-            estimatedItemSize={50} // Optimize performance
+            estimatedItemSize={100} // Optimize performance
             refreshControl={
               <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
             }

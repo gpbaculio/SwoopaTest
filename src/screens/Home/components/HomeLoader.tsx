@@ -8,20 +8,25 @@ import {Container, HeadersContainer} from './index';
 const mockHeaders = new Array(4).fill(null);
 const mockProducts = new Array(5).fill(null);
 
-export function ProductsLoader() {
+export function ProductLoader() {
   const {width, height} = useWindowDimensions();
 
-  return mockProducts.map((_i, index) => (
+  return (
     <DynamicAnimatedView
       entering={FadeIn}
       exiting={FadeOut}
-      key={`mock-product-${index}`}
       width={width - 32}
       height={height * 0.21}
       borderRadius={16}
       my="XS"
       backgroundColor="GREY_TEXT"
     />
+  );
+}
+
+export function ProductsLoader() {
+  return mockProducts.map((_i, index) => (
+    <ProductLoader key={`mock-product-${index}`} />
   ));
 }
 

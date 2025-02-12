@@ -10,6 +10,7 @@ import {
   IconHome,
   IconHousehold,
 } from './index';
+
 import {HomeCategory} from '../index';
 
 const categories = [
@@ -22,11 +23,13 @@ const categories = [
 type HeaderCategoriesProps = {
   category: string;
   handleChangeCategory: (c: HomeCategory) => void;
+  isLoading: boolean;
 };
 
 export function HeaderCategories({
   category,
   handleChangeCategory,
+  isLoading,
 }: HeaderCategoriesProps) {
   const id = useId();
 
@@ -37,6 +40,8 @@ export function HeaderCategories({
 
         return (
           <HeaderButton
+            disabled={isLoading}
+            opacity={isLoading ? 0.5 : 1}
             key={`${id}-header-button-${key}`}
             onPress={() => handleChangeCategory(key as HomeCategory)}>
             <IconContainer>
