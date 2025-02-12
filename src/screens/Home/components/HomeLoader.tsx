@@ -1,20 +1,38 @@
 import React from 'react';
 import {useWindowDimensions} from 'react-native';
+import {FadeIn, FadeOut} from 'react-native-reanimated';
 
-import {DynamicView, SkeletonLoader} from '@components';
+import {DynamicAnimatedView, DynamicView, SkeletonLoader} from '@components';
 import {Container, HeadersContainer} from './index';
 
 const mockHeaders = new Array(4).fill(null);
 const mockProducts = new Array(5).fill(null);
 
-export function HomeLoader() {
+export function ProductsLoader() {
   const {width, height} = useWindowDimensions();
 
+  return mockProducts.map((_i, index) => (
+    <DynamicAnimatedView
+      entering={FadeIn}
+      exiting={FadeOut}
+      key={`mock-product-${index}`}
+      width={width - 32}
+      height={height * 0.21}
+      borderRadius={16}
+      my="XS"
+      backgroundColor="GREY_TEXT"
+    />
+  ));
+}
+
+export function HomeLoader() {
   return (
     <Container>
       <SkeletonLoader>
         <>
-          <DynamicView
+          <DynamicAnimatedView
+            entering={FadeIn}
+            exiting={FadeOut}
             width={160}
             height={28}
             borderRadius={4}
@@ -39,16 +57,7 @@ export function HomeLoader() {
               </DynamicView>
             ))}
           </HeadersContainer>
-          {mockProducts.map((_i, index) => (
-            <DynamicView
-              key={`mock-product-${index}`}
-              width={width - 32}
-              height={height * 0.21}
-              borderRadius={16}
-              my="XS"
-              backgroundColor="GREY_TEXT"
-            />
-          ))}
+          <ProductsLoader />
         </>
       </SkeletonLoader>
     </Container>

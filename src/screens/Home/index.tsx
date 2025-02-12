@@ -10,10 +10,10 @@ import {
   Product,
   HeaderCategories,
   ListContainer,
-  FooterLoader,
+  ProductsLoader,
 } from './components';
 
-import {useInfiniteProductsQuery} from './hooks';
+import {useInfiniteProductsQuery, useRefreshProducts} from './hooks';
 
 import {ProductType} from 'src/mocks';
 
@@ -23,25 +23,22 @@ function Home() {
   const id = useId();
   const [category, setCategory] = useState<HomeCategory>('All');
 
-  const {data, hasNextPage, fetchNextPage, isLoading, isError} =
-    useInfiniteProductsQuery({
-      category: 'All',
-    });
+  const {
+    data,
+    hasNextPage,
+    fetchNextPage,
+    isLoading,
+    isError,
+    refetch,
+    isRefetching,
+  } = useInfiniteProductsQuery({
+    category,
+  });
 
-  const [refreshing, setRefreshing] = useState(false);
   // Handle category change
   const handleChangeCategory = (key: HomeCategory) => setCategory(key);
 
-  // Pull-to-Refresh handler
-  const onRefresh = async () => {
-    setRefreshing(true);
-    try {
-      // await goToPreviousPage(); // Reload the first page
-    } finally {
-      setRefreshing(false);
-    }
-  };
-
+  const {refreshing, onRefresh} = useRefreshProducts(refetch);
   // Load more products when scrolling to the bottom
   const onEndReached = () => {
     if (!hasNextPage || isLoading) {
@@ -71,20 +68,24 @@ function Home() {
         handleChangeCategory={handleChangeCategory}
       />
       <ListContainer>
-        <FlashList
-          data={data}
-          keyExtractor={item => `${id}-product-${item.id}`}
-          renderItem={({item}) => {
-            return <Product item={item} />;
-          }}
-          estimatedItemSize={50} // Optimize performance
-          refreshControl={
-            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-          }
-          onEndReached={onEndReached}
-          onEndReachedThreshold={0.5} // Load more when reaching 50% from the bottom
-          ListFooterComponent={hasNextPage ? <FooterLoader /> : null}
-        />
+        {isRefetching ? (
+          <ProductsLoader />
+        ) : (
+          <FlashList
+            data={data}
+            keyExtractor={item => `${id}-product-${item.id}`}
+            renderItem={({item}) => {
+              return <Product item={item} />;
+            }}
+            estimatedItemSize={50} // Optimize performance
+            refreshControl={
+              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+            }
+            onEndReached={onEndReached}
+            onEndReachedThreshold={0.5} // Load more when reaching 50% from the bottom
+            ListFooterComponent={hasNextPage ? <ProductsLoader /> : null}
+          />
+        )}
       </ListContainer>
     </Container>
   );

@@ -1,6 +1,7 @@
 import React from 'react';
 import {ProductType} from 'src/mocks';
-import {DynamicText, DynamicView} from '@components';
+import {DynamicAnimatedView, DynamicText} from '@components';
+import {FadeIn, FadeOut} from 'react-native-reanimated';
 
 type ProductProps = {
   item: ProductType;
@@ -8,8 +9,8 @@ type ProductProps = {
 
 export function Product({item}: ProductProps) {
   return (
-    <DynamicView>
+    <DynamicAnimatedView entering={FadeIn} exiting={FadeOut}>
       <DynamicText color="TEXT_BLACK">{item.name}</DynamicText>
-    </DynamicView>
+    </DynamicAnimatedView>
   );
 }

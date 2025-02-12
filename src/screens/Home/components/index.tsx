@@ -1,8 +1,10 @@
 import React from 'react';
 import {StyleSheet, useWindowDimensions} from 'react-native';
+import {FadeIn, FadeOut} from 'react-native-reanimated';
 
 import {
   ContainerProp,
+  DynamicAnimatedView,
   DynamicMaterialDesignIcons,
   DynamicMaterialIcons,
   DynamicText,
@@ -10,7 +12,6 @@ import {
   DynamicTouchableOpacityProps,
   DynamicView,
   ScreenContainer,
-  SkeletonLoader,
 } from '@components';
 export * from './HomeLoader';
 export * from './Product';
@@ -30,7 +31,10 @@ export function Container({children}: ContainerProp) {
 
 export function Title() {
   return (
-    <DynamicView variant="rowAlignCenter">
+    <DynamicAnimatedView
+      entering={FadeIn}
+      exiting={FadeOut}
+      variant="rowAlignCenter">
       <DynamicMaterialDesignIcons
         color={colors.GREY_TEXT}
         size={20}
@@ -43,7 +47,7 @@ export function Title() {
         color="TEXT_BLACK">
         Marketplace
       </DynamicText>
-    </DynamicView>
+    </DynamicAnimatedView>
   );
 }
 
@@ -140,9 +144,13 @@ export function HeaderButton({
 
 export function HeadersContainer({children}: ContainerProp) {
   return (
-    <DynamicView my="XS" variant="rowAlignCenter">
+    <DynamicAnimatedView
+      entering={FadeIn}
+      exiting={FadeOut}
+      my="XS"
+      variant="rowAlignCenter">
       {children}
-    </DynamicView>
+    </DynamicAnimatedView>
   );
 }
 
@@ -150,25 +158,13 @@ export function ListContainer({children}: ContainerProp) {
   const {height} = useWindowDimensions();
 
   return (
-    <DynamicView flex={1} minHeight={height * 0.9}>
+    <DynamicAnimatedView
+      entering={FadeIn}
+      exiting={FadeOut}
+      flex={1}
+      minHeight={height * 0.9}>
       {children}
-    </DynamicView>
-  );
-}
-
-export function FooterLoader() {
-  const {height, width} = useWindowDimensions();
-
-  return (
-    <SkeletonLoader>
-      <DynamicView
-        width={width - 32}
-        height={height * 0.21}
-        borderRadius={16}
-        my="XS"
-        backgroundColor="GREY_TEXT"
-      />
-    </SkeletonLoader>
+    </DynamicAnimatedView>
   );
 }
 
