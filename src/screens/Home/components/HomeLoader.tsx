@@ -2,7 +2,7 @@ import React from 'react';
 import {useWindowDimensions} from 'react-native';
 
 import {DynamicView, SkeletonLoader} from '@components';
-import {Container} from './index';
+import {Container, HeadersContainer} from './index';
 
 const mockHeaders = new Array(4).fill(null);
 const mockProducts = new Array(5).fill(null);
@@ -20,7 +20,7 @@ export function HomeLoader() {
             borderRadius={4}
             backgroundColor="GREY_TEXT"
           />
-          <DynamicView my="XS" variant="rowAlignCenter">
+          <HeadersContainer>
             {mockHeaders.map((_, index) => (
               <DynamicView key={index} variant="centerItems" mr="S">
                 <DynamicView
@@ -38,7 +38,7 @@ export function HomeLoader() {
                 />
               </DynamicView>
             ))}
-          </DynamicView>
+          </HeadersContainer>
           {mockProducts.map((_i, index) => (
             <DynamicView
               key={`mock-product-${index}`}

@@ -1,21 +1,24 @@
 import {InfiniteData, useSuspenseInfiniteQuery} from '@tanstack/react-query';
-import {PaginatedResponse, Product, ProductsShopAPI} from 'src/mocks';
+import {PaginatedResponse, ProductType, ProductsShopAPI} from 'src/mocks';
 
 interface UseInfiniteProductsOptions {
-  category?: Product['category'] | 'All';
+  category?: ProductType['category'] | 'All';
 }
 
-type ProductsQueryKey = ['products', {category?: Product['category'] | 'All'}];
+type ProductsQueryKey = [
+  'products',
+  {category?: ProductType['category'] | 'All'},
+];
 
 export function useInfiniteProductsQuery({
   category,
 }: UseInfiniteProductsOptions) {
   const api = new ProductsShopAPI();
 
-  const {data, fetchNextPage, hasNextPage} = useSuspenseInfiniteQuery<
-    PaginatedResponse<Product>,
+  const {data, ...rest} = useSuspenseInfiniteQuery<
+    PaginatedResponse<ProductType>,
     Error,
-    InfiniteData<PaginatedResponse<Product>>,
+    InfiniteData<PaginatedResponse<ProductType>>,
     ProductsQueryKey,
     number
   >({
@@ -30,8 +33,7 @@ export function useInfiniteProductsQuery({
   });
 
   return {
-    products: data?.pages.flatMap(page => page.data) ?? [],
-    fetchNextPage,
-    hasNextPage,
+    data: data?.pages.flatMap(page => page.data) ?? [],
+    ...rest,
   };
 }

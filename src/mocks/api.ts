@@ -1,4 +1,4 @@
-export interface Product {
+export interface ProductType {
   id: string;
   name: string;
   price: number;
@@ -20,7 +20,7 @@ export interface PaginatedResponse<T> {
 }
 
 export class ProductsShopAPI {
-  private products: Product[] = [
+  private products: ProductType[] = [
     {
       id: 'prod_001',
       name: 'Chair',
@@ -224,8 +224,8 @@ export class ProductsShopAPI {
   ];
 
   async getProducts(
-    options: {page?: number; category?: Product['category'] | 'All'} = {},
-  ): Promise<PaginatedResponse<Product>> {
+    options: {page?: number; category?: ProductType['category'] | 'All'} = {},
+  ): Promise<PaginatedResponse<ProductType>> {
     const {page = 1, category} = options;
     const pageSize = 5;
 

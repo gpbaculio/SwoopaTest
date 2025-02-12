@@ -11,6 +11,9 @@ import {
   DynamicView,
   ScreenContainer,
 } from '@components';
+export * from './HomeLoader';
+export * from './Product';
+export * from './HeaderCategories';
 
 import {colors} from 'src/theme/variants';
 
@@ -134,7 +137,13 @@ export function HeaderButton({
   );
 }
 
-export * from './HomeLoader';
+export function HeadersContainer({children}: ContainerProp) {
+  return (
+    <DynamicView my="XS" variant="rowAlignCenter">
+      {children}
+    </DynamicView>
+  );
+}
 
 const styles = StyleSheet.create({
   shadow: {

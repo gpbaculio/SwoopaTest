@@ -1,62 +1,103 @@
 import React, {Suspense, useId, useState} from 'react';
+import {FlashList} from '@shopify/flash-list';
+import {RefreshControl} from 'react-native-gesture-handler';
+import {useWindowDimensions} from 'react-native';
 
-import {DynamicView} from '@components';
+import {DynamicText, DynamicView} from '@components';
 import {
   Container,
-  HeaderButton,
-  HeaderLabel,
-  IconClothing,
-  IconContainer,
-  IconGarden,
-  IconHome,
-  IconHousehold,
   Title,
   HomeLoader,
+  Product,
+  HeaderCategories,
 } from './components';
 
-import {Product} from 'src/mocks';
 import {useInfiniteProductsQuery} from './hooks';
+import {ProductType} from 'src/mocks';
+import {spacing} from '@theme';
 
-type HomeCategory = Product['category'] | 'All';
-
-const categories = [
-  {key: 'All', Icon: IconHome},
-  {key: 'Household', Icon: IconHousehold},
-  {key: 'Clothings', Icon: IconClothing},
-  {key: 'Garden', Icon: IconGarden},
-];
+export type HomeCategory = ProductType['category'] | 'All';
 
 function Home() {
   const [category, setCategory] = useState<HomeCategory>('All');
 
-  const id = useId();
-  const {
-    products,
-    pagination,
-    isLoading,
-    isError,
-    goToNextPage,
-    goToPreviousPage,
-  } = useInfiniteProductsQuery({category: 'All'});
+  const {data, hasNextPage, fetchNextPage, isLoading, isError} =
+    useInfiniteProductsQuery({
+      category: 'All',
+    });
+
+  const [refreshing, setRefreshing] = useState(false);
+  const {width, height} = useWindowDimensions();
+  // Handle category change
+  const handleChangeCategory = (key: HomeCategory) => setCategory(key);
+
+  // Pull-to-Refresh handler
+  const onRefresh = async () => {
+    setRefreshing(true);
+    try {
+      // await goToPreviousPage(); // Reload the first page
+    } finally {
+      setRefreshing(false);
+    }
+  };
+
+  // Load more products when scrolling to the bottom
+  const onEndReached = () => {
+    if (!hasNextPage || isLoading) {
+      return;
+    }
+    fetchNextPage();
+  };
+
+  if (isError) {
+    return (
+      <Container>
+        <Title />
+        <DynamicView my="XS" variant="rowAlignCenter">
+          <DynamicText color="TEXT_BLACK">
+            Something went wrong. Please try again.
+          </DynamicText>
+        </DynamicView>
+      </Container>
+    );
+  }
 
   return (
     <Container>
       <Title />
-      <DynamicView my="XS" variant="rowAlignCenter">
-        {categories.map(({key, Icon}) => {
-          const isActive = category === key;
-
-          return (
-            <HeaderButton
-              key={`${id}-header-button-${key}`}
-              onPress={() => setCategory(key as HomeCategory)}>
-              <IconContainer>
-                <Icon isActive={isActive} />
-              </IconContainer>
-              <HeaderLabel label={key} isActive={isActive} />
-            </HeaderButton>
-          );
-        })}
+      <HeaderCategories
+        category={category}
+        handleChangeCategory={handleChangeCategory}
+      />
+      <DynamicView
+        flex={1}
+        minHeight={height * 0.9}
+        width={width - spacing.M * 2}>
+        <FlashList
+          data={data}
+          keyExtractor={item => item.id.toString()}
+          renderItem={({item}) => {
+            console.log('item ', item);
+            return <Product item={item} />;
+          }}
+          estimatedItemSize={50} // Optimize performance
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          }
+          onEndReached={onEndReached}
+          onEndReachedThreshold={0.5} // Load more when reaching 50% from the bottom
+          ListFooterComponent={
+            hasNextPage ? (
+              <DynamicView
+                width={width - 32}
+                height={height * 0.21}
+                borderRadius={16}
+                my="XS"
+                backgroundColor="GREY_TEXT"
+              />
+            ) : null
+          }
+        />
       </DynamicView>
     </Container>
   );
