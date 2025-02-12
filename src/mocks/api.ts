@@ -224,28 +224,30 @@ export class ProductsShopAPI {
   ];
 
   async getProducts(
-    options: {
-      page?: number;
-      category?: Product['category'];
-    } = {},
+    options: {page?: number; category?: Product['category'] | 'All'} = {},
   ): Promise<PaginatedResponse<Product>> {
     const {page = 1, category} = options;
     const pageSize = 5;
 
     let filteredProducts = [...this.products];
 
-    if (category) {
+    if (category && category !== 'All') {
       filteredProducts = filteredProducts.filter(p => p.category === category);
     }
 
+    // Sort products by postedAt (newest first)
     filteredProducts.sort(
       (a, b) => new Date(b.postedAt).getTime() - new Date(a.postedAt).getTime(),
     );
 
+    // Paginate the results
     const startIndex = (page - 1) * pageSize;
-    const endIndex = startIndex + pageSize;
-    const paginatedProducts = filteredProducts.slice(startIndex, endIndex);
+    const paginatedProducts = filteredProducts.slice(
+      startIndex,
+      startIndex + pageSize,
+    );
 
+    // Simulate API delay (remove in production)
     await new Promise(resolve => setTimeout(resolve, 1000));
 
     return {
