@@ -1,4 +1,4 @@
-interface Product {
+export interface Product {
   id: string;
   name: string;
   price: number;
@@ -9,7 +9,7 @@ interface Product {
   imageUrl: string;
 }
 
-interface PaginatedResponse<T> {
+export interface PaginatedResponse<T> {
   data: T[];
   pagination: {
     currentPage: number;
