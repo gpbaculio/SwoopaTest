@@ -71,7 +71,7 @@ export function IconHome({isActive}: HeaderIcon) {
   );
 }
 
-export function IconHouseHold({isActive}: HeaderIcon) {
+export function IconHousehold({isActive}: HeaderIcon) {
   return (
     <DynamicMaterialDesignIcons
       size={24}

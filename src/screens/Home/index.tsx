@@ -9,7 +9,7 @@ import {
   IconContainer,
   IconGarden,
   IconHome,
-  IconHouseHold,
+  IconHousehold,
   Title,
   HomeLoader,
 } from './components';
@@ -21,7 +21,7 @@ type HomeCategory = Product['category'] | 'All';
 
 const categories = [
   {key: 'All', Icon: IconHome},
-  {key: 'HouseHold', Icon: IconHouseHold},
+  {key: 'Household', Icon: IconHousehold},
   {key: 'Clothings', Icon: IconClothing},
   {key: 'Garden', Icon: IconGarden},
 ];
