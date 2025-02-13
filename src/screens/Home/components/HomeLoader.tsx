@@ -13,15 +13,17 @@ export function ProductLoader() {
   const {width, height} = useWindowDimensions();
 
   return (
-    <DynamicAnimatedView
-      entering={FadeIn}
-      exiting={FadeOut}
-      width={width - 32}
-      height={height * 0.18}
-      borderRadius={16}
-      my="XS"
-      backgroundColor="GREY_TEXT"
-    />
+    <SkeletonLoader>
+      <DynamicAnimatedView
+        entering={FadeIn}
+        exiting={FadeOut}
+        width={width - 32}
+        height={height * 0.18}
+        borderRadius={16}
+        my="XS"
+        backgroundColor="GREY_TEXT"
+      />
+    </SkeletonLoader>
   );
 }
 
