@@ -15,7 +15,7 @@ import {
 } from '@components';
 import {ProductCategory} from './HeaderCategories';
 import {ProductLoader} from './HomeLoader';
-import {formatPrice, kmToMiles} from '../utils';
+import {formatPrice, getTimeAgo, kmToMiles} from '../utils';
 import {homeStyles} from './index';
 
 type ProductProps = {
@@ -34,7 +34,7 @@ export function Product({item}: ProductProps) {
         onError={() => setLoading(false)} // Hide skeleton if image fails
       >
         <ProductLinearGradient />
-        <DynamicView p="S">
+        <DynamicView height="100%" p="S">
           <DynamicView variant="rowAlignCenter" justifyContent="space-between">
             <ProductCategory categoryKey={item.category} />
             <DynamicView>
@@ -43,6 +43,24 @@ export function Product({item}: ProductProps) {
                 <Toplabel label={`${formatPrice(item.price, 'AUD')}`} />
               </DynamicView>
               {item.dealType === 'SALE' ? <Sale /> : null}
+            </DynamicView>
+          </DynamicView>
+          <DynamicView
+            mt="auto"
+            flexDirection="row"
+            justifyContent="space-between">
+            <DynamicView width="50%">
+              <DynamicText
+                numberOfLines={2}
+                color="BACKGROUND_WHITE"
+                variant="NunitoBold">
+                {item.name}
+              </DynamicText>
+            </DynamicView>
+            <DynamicView mt="auto">
+              <DynamicText color="BACKGROUND_WHITE" variant="NunitoBold">
+                {getTimeAgo(item.postedAt)}
+              </DynamicText>
             </DynamicView>
           </DynamicView>
         </DynamicView>
