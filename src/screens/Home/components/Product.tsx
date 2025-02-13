@@ -37,9 +37,12 @@ export function Product({item}: ProductProps) {
         <DynamicView p="S">
           <DynamicView variant="rowAlignCenter" justifyContent="space-between">
             <ProductCategory categoryKey={item.category} />
-            <DynamicView variant="rowAlignCenter">
-              <Toplabel label={`${kmToMiles(item.distanceInKm)} mi`} />
-              <Toplabel label={`${formatPrice(item.price, 'AUD')}`} />
+            <DynamicView>
+              <DynamicView variant="rowAlignCenter">
+                <Toplabel label={`${kmToMiles(item.distanceInKm)} mi`} />
+                <Toplabel label={`${formatPrice(item.price, 'AUD')}`} />
+              </DynamicView>
+              {item.dealType === 'SALE' ? <Sale /> : null}
             </DynamicView>
           </DynamicView>
         </DynamicView>
@@ -53,6 +56,21 @@ export function Product({item}: ProductProps) {
   );
 }
 
+function Sale() {
+  return (
+    <DynamicView
+      ml="auto"
+      mt="XS"
+      px="XS"
+      py="XXXS"
+      borderRadius={16}
+      backgroundColor="SALE_GREEN">
+      <DynamicText color="BACKGROUND_WHITE" variant="NunitoBold">
+        Sale
+      </DynamicText>
+    </DynamicView>
+  );
+}
 type ToplabelProps = {
   label: string;
 };
@@ -63,7 +81,7 @@ function Toplabel({label}: ToplabelProps) {
       px="XS"
       py="XXXS"
       ml="XS"
-      borderRadius={12}
+      borderRadius={16}
       backgroundColor="BACKGROUND_WHITE"
       style={homeStyles.shadow}
       variant="centerItems">
@@ -103,7 +121,7 @@ function Container({children}: ContainerProp) {
   return (
     <DynamicAnimatedView
       width="100%"
-      height={height * 0.18}
+      height={height * 0.19}
       entering={FadeIn}
       exiting={FadeOut}
       borderRadius={16}
@@ -115,10 +133,16 @@ function Container({children}: ContainerProp) {
 
 function ProductLinearGradient() {
   return (
-    <LinearGradient
-      colors={['transparent', 'rgba(0, 0, 0, 0.25)']} // Transparent to dark fade
-      style={styles.linearGradient}
-    />
+    <>
+      <LinearGradient
+        colors={['rgba(0, 0, 0, 0.2)', 'transparent']}
+        style={[styles.linearGradient, styles.topGradient]}
+      />
+      <LinearGradient
+        colors={['transparent', 'rgba(0, 0, 0, 0.2)']}
+        style={[styles.linearGradient, styles.bottomGradient]}
+      />
+    </>
   );
 }
 
@@ -128,5 +152,11 @@ const styles = StyleSheet.create({
     height: '100%',
     borderRadius: 16, // Make sure gradient follows rounded corners
     position: 'absolute',
+  },
+  topGradient: {
+    top: 0,
+  },
+  bottomGradient: {
+    bottom: 0,
   },
 });

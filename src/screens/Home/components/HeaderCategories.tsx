@@ -36,6 +36,7 @@ export const ProductCategory = ({categoryKey}: ProductCategoryProps) => {
         width={32}
         height={32}
         borderRadius={3}
+        mb="auto"
         variant="centerItems">
         <Category.Icon isActive />
       </DynamicView>
