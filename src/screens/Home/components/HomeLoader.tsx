@@ -16,7 +16,7 @@ export function ProductLoader() {
       entering={FadeIn}
       exiting={FadeOut}
       width={width - 32}
-      height={height * 0.21}
+      height={height * 0.18}
       borderRadius={16}
       my="XS"
       backgroundColor="GREY_TEXT"
