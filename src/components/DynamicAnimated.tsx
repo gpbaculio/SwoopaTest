@@ -16,6 +16,10 @@ import {Theme} from '@theme';
 export const DynamicAnimatedView =
   Animated.createAnimatedComponent(DynamicView);
 
+export type DynamicAnimatedViewProps = React.ComponentProps<
+  typeof DynamicAnimatedView
+>;
+
 export const DynamicAnimatedImage =
   Animated.createAnimatedComponent(DynamicImage);
 

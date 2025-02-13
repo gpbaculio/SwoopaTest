@@ -1,9 +1,7 @@
-import React, {useState} from 'react';
-import {StyleSheet, useWindowDimensions} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {Image, StyleSheet, useWindowDimensions} from 'react-native';
 import {FadeIn, FadeOut} from 'react-native-reanimated';
 import LinearGradient from 'react-native-linear-gradient';
-
-import {ProductType} from 'src/mocks';
 
 import {
   ContainerProp,
@@ -15,15 +13,29 @@ import {
 } from '@components';
 import {ProductCategory} from './HeaderCategories';
 import {ProductLoader} from './HomeLoader';
+
 import {formatPrice, getTimeAgo, kmToMiles} from '../utils';
+
 import {homeStyles} from './index';
+
+import {ProductType} from 'src/mocks';
 
 type ProductProps = {
   item: ProductType;
 };
 
 export function Product({item}: ProductProps) {
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    if (item.imageUrl) {
+      Image.getSize(
+        item.imageUrl,
+        () => setLoading(false), // If image is cached, don't show loading
+        () => setLoading(true), // If failed to load, show skeleton
+      );
+    }
+  }, [item.imageUrl]);
 
   return (
     <Container>

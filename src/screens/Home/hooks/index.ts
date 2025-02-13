@@ -1,4 +1,8 @@
-import {InfiniteData, useSuspenseInfiniteQuery} from '@tanstack/react-query';
+import {
+  InfiniteData,
+  keepPreviousData,
+  useInfiniteQuery,
+} from '@tanstack/react-query';
 import {PaginatedResponse, ProductType, ProductsShopAPI} from 'src/mocks';
 
 interface UseInfiniteProductsOptions {
@@ -15,7 +19,7 @@ export function useInfiniteProductsQuery({
 }: UseInfiniteProductsOptions) {
   const api = new ProductsShopAPI();
 
-  const {data, ...rest} = useSuspenseInfiniteQuery<
+  const {data, ...rest} = useInfiniteQuery<
     PaginatedResponse<ProductType>,
     Error,
     InfiniteData<PaginatedResponse<ProductType>>,
@@ -30,6 +34,7 @@ export function useInfiniteProductsQuery({
       const nextPage = lastPage.pagination.currentPage + 1;
       return nextPage <= lastPage.pagination.totalPages ? nextPage : undefined;
     },
+    placeholderData: keepPreviousData,
   });
 
   return {

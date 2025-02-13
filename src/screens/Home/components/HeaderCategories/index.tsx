@@ -1,19 +1,20 @@
 import React, {useId} from 'react';
 
+import {DynamicView} from '@components';
+import {HeadersContainer} from '../HeadersContainer';
 import {
   HeaderButton,
   HeaderLabel,
-  HeadersContainer,
-  homeStyles,
-  IconClothing,
-  IconContainer,
   IconGarden,
   IconHome,
   IconHousehold,
-} from './index';
+  IconClothing,
+  IconContainer,
+} from './components';
 
-import {HomeCategory} from '../index';
-import {DynamicView} from '@components';
+import {HomeCategory} from '../../index';
+
+import {homeStyles} from '../index';
 
 const categories = [
   {key: 'All', Icon: IconHome},

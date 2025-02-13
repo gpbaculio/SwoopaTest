@@ -1,6 +1,8 @@
-import React, {Suspense, useId, useState} from 'react';
+import React, {useEffect, useId, useRef, useState} from 'react';
 import {FlashList} from '@shopify/flash-list';
 import {RefreshControl} from 'react-native-gesture-handler';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import {useWindowDimensions} from 'react-native';
 
 import {DynamicText, DynamicView} from '@components';
 import {
@@ -19,8 +21,9 @@ import {ProductType} from 'src/mocks';
 
 export type HomeCategory = ProductType['category'] | 'All';
 
-function Home() {
+export default function Home() {
   const id = useId();
+  const listRef = useRef<FlashList<ProductType>>(null);
   const [category, setCategory] = useState<HomeCategory>('All');
 
   const {
@@ -31,12 +34,22 @@ function Home() {
     isError,
     refetch,
     isRefetching,
-  } = useInfiniteProductsQuery({
-    category,
-  });
+  } = useInfiniteProductsQuery({category});
 
-  // Handle category change
-  const handleChangeCategory = (key: HomeCategory) => setCategory(key);
+  const handleChangeCategory = (newCategory: HomeCategory) => {
+    setCategory(newCategory); // Update category state
+  };
+
+  const {bottom} = useSafeAreaInsets();
+  const {height} = useWindowDimensions();
+  const paddingBottom = bottom + (height * 0.19) / 2;
+
+  useEffect(() => {
+    // Scroll to top when category changes after refetching
+    if (!isRefetching) {
+      listRef.current?.scrollToOffset({offset: 0, animated: true});
+    }
+  }, [category, isRefetching]);
 
   const {refreshing, onRefresh} = useRefreshProducts(refetch);
   // Load more products when scrolling to the bottom
@@ -46,6 +59,10 @@ function Home() {
     }
     fetchNextPage();
   };
+
+  if (isLoading) {
+    return <HomeLoader />;
+  }
 
   if (isError) {
     return (
@@ -64,43 +81,49 @@ function Home() {
     <Container>
       <Title />
       <HeaderCategories
-        isLoading={isRefetching || isLoading}
+        isLoading={isLoading || isRefetching}
         category={category}
         handleChangeCategory={handleChangeCategory}
       />
-      <ListContainer>
-        {isRefetching ? (
-          <ProductsLoader />
-        ) : (
-          <FlashList
-            data={data}
-            keyExtractor={item => `${id}-product-${item.id}`}
-            renderItem={({item}) => {
-              return <Product item={item} />;
-            }}
-            ItemSeparatorComponent={Separator}
-            estimatedItemSize={100} // Optimize performance
-            refreshControl={
-              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-            }
-            onEndReached={onEndReached}
-            onEndReachedThreshold={0.5} // Load more when reaching 50% from the bottom
-            ListFooterComponent={hasNextPage ? <ProductsLoader /> : null}
-          />
-        )}
+      <ListContainer opacity={isLoading || isRefetching ? 0.5 : 1}>
+        <FlashList
+          ListHeaderComponent={
+            <ListHeader isLoading={isLoading || refreshing} />
+          }
+          scrollEnabled={!isLoading && !isRefetching}
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={{paddingBottom: paddingBottom}}
+          ref={listRef}
+          data={data}
+          keyExtractor={item => `${id}-product-${item.id}`}
+          renderItem={({item}) => <Product item={item} />}
+          ItemSeparatorComponent={Separator}
+          estimatedItemSize={100} // Optimize performance
+          refreshing={refreshing || isRefetching}
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          }
+          onEndReached={onEndReached}
+          onEndReachedThreshold={0.5} // Load more when reaching 50% from the bottom
+          ListFooterComponent={hasNextPage ? <ProductsLoader /> : null}
+        />
       </ListContainer>
     </Container>
   );
 }
 
-function Separator() {
-  return <DynamicView my="XS" />;
+type LoadingProp = {
+  isLoading: boolean;
+};
+
+function ListHeader({isLoading}: LoadingProp) {
+  if (isLoading) {
+    return <ProductsLoader />;
+  }
+
+  return null;
 }
 
-export default function HomeSuspense() {
-  return (
-    <Suspense fallback={<HomeLoader />}>
-      <Home />
-    </Suspense>
-  );
+function Separator() {
+  return <DynamicView my="XS" />;
 }

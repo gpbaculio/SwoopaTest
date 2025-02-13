@@ -3,7 +3,8 @@ import {useWindowDimensions} from 'react-native';
 import {FadeIn, FadeOut} from 'react-native-reanimated';
 
 import {DynamicAnimatedView, DynamicView, SkeletonLoader} from '@components';
-import {Container, HeadersContainer} from './index';
+import {Container} from './index';
+import {HeadersContainer} from './HeadersContainer';
 
 const mockHeaders = new Array(4).fill(null);
 const mockProducts = new Array(5).fill(null);
