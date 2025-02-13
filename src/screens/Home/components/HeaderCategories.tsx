@@ -4,6 +4,7 @@ import {
   HeaderButton,
   HeaderLabel,
   HeadersContainer,
+  homeStyles,
   IconClothing,
   IconContainer,
   IconGarden,
@@ -12,13 +13,37 @@ import {
 } from './index';
 
 import {HomeCategory} from '../index';
+import {DynamicView} from '@components';
 
 const categories = [
   {key: 'All', Icon: IconHome},
   {key: 'Household', Icon: IconHousehold},
-  {key: 'Clothings', Icon: IconClothing},
+  {key: 'Clothing', Icon: IconClothing},
   {key: 'Garden', Icon: IconGarden},
-];
+] as const;
+
+type ProductCategoryProps = {
+  categoryKey: string;
+};
+
+export const ProductCategory = ({categoryKey}: ProductCategoryProps) => {
+  const Category = categories.find(cat => cat.key === categoryKey.trim());
+
+  if (Category) {
+    return (
+      <DynamicView
+        style={homeStyles.shadow}
+        width={32}
+        height={32}
+        borderRadius={3}
+        variant="centerItems">
+        <Category.Icon isActive />
+      </DynamicView>
+    );
+  }
+
+  return null;
+};
 
 type HeaderCategoriesProps = {
   category: string;

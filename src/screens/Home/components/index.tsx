@@ -55,7 +55,7 @@ export function IconContainer({children}: ContainerProp) {
   return (
     <DynamicView
       backgroundColor="BACKGROUND_WHITE"
-      style={styles.shadow}
+      style={homeStyles.shadow}
       width={36}
       height={36}
       borderRadius={36}
@@ -168,7 +168,7 @@ export function ListContainer({children}: ContainerProp) {
   );
 }
 
-const styles = StyleSheet.create({
+export const homeStyles = StyleSheet.create({
   shadow: {
     backgroundColor: 'white',
     shadowColor: '#000', // Black shadow

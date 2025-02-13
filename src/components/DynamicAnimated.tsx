@@ -23,6 +23,10 @@ export const DynamicAnimatedImageBackground = Animated.createAnimatedComponent(
   DynamicImageBackground,
 );
 
+export type DynamicAnimatedImageBackgroundProps = React.ComponentProps<
+  typeof DynamicAnimatedImageBackground
+>;
+
 export const AnimatedPressable =
   Animated.createAnimatedComponent(DynamicPressable);
 

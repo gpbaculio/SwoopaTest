@@ -78,7 +78,7 @@ function Home() {
             renderItem={({item}) => {
               return <Product item={item} />;
             }}
-            ItemSeparatorComponent={() => <DynamicView my="XS" />}
+            ItemSeparatorComponent={Separator}
             estimatedItemSize={100} // Optimize performance
             refreshControl={
               <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
@@ -91,6 +91,10 @@ function Home() {
       </ListContainer>
     </Container>
   );
+}
+
+function Separator() {
+  return <DynamicView my="XS" />;
 }
 
 export default function HomeSuspense() {

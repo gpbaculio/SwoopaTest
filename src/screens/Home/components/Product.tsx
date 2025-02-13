@@ -1,14 +1,22 @@
-import React, {useEffect, useState} from 'react';
-import {ProductType} from 'src/mocks';
-import {
-  DynamicAnimatedImage,
-  DynamicAnimatedImageBackground,
-  DynamicAnimatedView,
-  DynamicImage,
-  DynamicText,
-} from '@components';
+import React, {useState} from 'react';
+import {StyleSheet, useWindowDimensions} from 'react-native';
 import {FadeIn, FadeOut} from 'react-native-reanimated';
-import {Image, useWindowDimensions} from 'react-native';
+import LinearGradient from 'react-native-linear-gradient';
+
+import {ProductType} from 'src/mocks';
+
+import {
+  ContainerProp,
+  DynamicAnimatedImageBackground,
+  DynamicAnimatedImageBackgroundProps,
+  DynamicAnimatedView,
+  DynamicText,
+  DynamicView,
+} from '@components';
+import {ProductCategory} from './HeaderCategories';
+import {ProductLoader} from './HomeLoader';
+import {formatPrice, kmToMiles} from '../utils';
+import {homeStyles} from './index';
 
 type ProductProps = {
   item: ProductType;
@@ -16,6 +24,80 @@ type ProductProps = {
 
 export function Product({item}: ProductProps) {
   const [loading, setLoading] = useState(true);
+
+  return (
+    <Container>
+      <ProductImage
+        source={{uri: item.imageUrl}}
+        opacity={loading ? 0 : 1}
+        onLoad={() => setLoading(false)} // Hide skeleton when image loads
+        onError={() => setLoading(false)} // Hide skeleton if image fails
+      >
+        <ProductLinearGradient />
+        <DynamicView p="S">
+          <DynamicView variant="rowAlignCenter" justifyContent="space-between">
+            <ProductCategory categoryKey={item.category} />
+            <DynamicView variant="rowAlignCenter">
+              <Toplabel label={`${kmToMiles(item.distanceInKm)} mi`} />
+              <Toplabel label={`${formatPrice(item.price, 'AUD')}`} />
+            </DynamicView>
+          </DynamicView>
+        </DynamicView>
+      </ProductImage>
+      {loading ? (
+        <DynamicView position="absolute">
+          <ProductLoader />
+        </DynamicView>
+      ) : null}
+    </Container>
+  );
+}
+
+type ToplabelProps = {
+  label: string;
+};
+
+function Toplabel({label}: ToplabelProps) {
+  return (
+    <DynamicView
+      px="XS"
+      py="XXXS"
+      ml="XS"
+      borderRadius={12}
+      backgroundColor="BACKGROUND_WHITE"
+      style={homeStyles.shadow}
+      variant="centerItems">
+      <DynamicText variant="NunitoSemiBold">{label}</DynamicText>
+    </DynamicView>
+  );
+}
+
+function ProductImage({
+  children,
+  source,
+  opacity,
+  onLoad,
+  onError,
+}: DynamicAnimatedImageBackgroundProps & ContainerProp) {
+  return (
+    <DynamicAnimatedImageBackground
+      entering={FadeIn}
+      exiting={FadeOut}
+      source={source}
+      opacity={opacity}
+      width="100%"
+      height="100%"
+      borderRadius={16}
+      resizeMode="cover"
+      onLoad={onLoad} // Hide skeleton when image loads
+      onError={onError} // Hide skeleton if image fails
+    >
+      {children}
+    </DynamicAnimatedImageBackground>
+  );
+}
+
+function Container({children}: ContainerProp) {
   const {height} = useWindowDimensions();
 
   return (
@@ -26,18 +108,25 @@ export function Product({item}: ProductProps) {
       exiting={FadeOut}
       borderRadius={16}
       overflow="hidden">
-      <DynamicAnimatedImageBackground
-        source={{uri: item.imageUrl}}
-        opacity={loading ? 0 : 1}
-        width="100%"
-        height="100%"
-        borderRadius={16}
-        resizeMode="cover"
-        onLoad={() => setLoading(false)} // Hide skeleton when image loads
-        onError={() => setLoading(false)} // Hide skeleton if image fails
-      >
-        <DynamicText color="TEXT_BLACK">{item.name}</DynamicText>
-      </DynamicAnimatedImageBackground>
+      {children}
     </DynamicAnimatedView>
   );
 }
+
+function ProductLinearGradient() {
+  return (
+    <LinearGradient
+      colors={['transparent', 'rgba(0, 0, 0, 0.25)']} // Transparent to dark fade
+      style={styles.linearGradient}
+    />
+  );
+}
+
+const styles = StyleSheet.create({
+  linearGradient: {
+    width: '100%',
+    height: '100%',
+    borderRadius: 16, // Make sure gradient follows rounded corners
+    position: 'absolute',
+  },
+});
